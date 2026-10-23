@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const shopRoutes = require("./routes/shopRoutes");
 
 const app = express();
 
@@ -14,6 +15,9 @@ app.get('/api/health', (req, res) => {
 
 // Routes will be plugged in here as you build them, e.g.:
 app.use('/api/auth', require('./routes/authRoutes'));
+
+
+app.use("/api/shops", shopRoutes);
 
 // Error handler: catches errors thrown anywhere in the app
 // (Express recognises it by its 4 parameters)

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const shopSchema = new mongoose.Schema(
   {
@@ -61,22 +61,18 @@ const shopSchema = new mongoose.Schema(
   { timestamps: true } // adds createdAt and updatedAt automatically
 );
 
-// Auto-generate the slug from the name before saving
-shopSchema.pre("validate", function (next) {
-  if (this.isModified("name")) {
+// Auto-generate the slug from the name before validating
+shopSchema.pre("validate", function () {
+  if (this.name && this.isModified("name")) {
     this.slug = this.name
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
   }
-  next();
 });
-
 // Speeds up the common queries: "all approved shops" and "this owner's shop"
 shopSchema.index({ status: 1 });
 shopSchema.index({ owner: 1 });
 
-const Shop = mongoose.model("Shop", shopSchema);
-
-export default Shop;
+module.exports = mongoose.model("Shop", shopSchema);
