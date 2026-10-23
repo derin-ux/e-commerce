@@ -148,4 +148,41 @@ const getMyShop = async (req, res) => {
 };
 
 
-module.exports = { registerShop, getPendingShops, approveShop, rejectShop , getMyShop};
+// @desc    Get all approved shops (public)
+// @route   GET /api/shops
+// @access  Public
+const getApprovedShops = async (req, res) => {
+  try {
+    const shops = await Shop.find({ status: "approved" }).sort({ createdAt: -1 });
+
+    res.status(200).json(shops);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// @desc    Get one approved shop (public)
+// @route   GET /api/shops/:id
+// @access  Public
+const getShopById = async (req, res) => {
+  try {
+    const shop = await Shop.findOne({
+      _id: req.params.id,
+      status: "approved",
+    });
+
+    if (!shop) {
+      return res.status(404).json({ message: "Shop not found" });
+    }
+
+    res.status(200).json(shop);
+  } catch (error) {
+    // A badly formed ID (not a valid MongoDB ID) throws a CastError
+    if (error.name === "CastError") {
+      return res.status(404).json({ message: "Shop not found" });
+    }
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+module.exports = { registerShop, getPendingShops, approveShop, rejectShop , getMyShop, getApprovedShops, getShopById};
