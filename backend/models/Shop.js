@@ -45,13 +45,14 @@ const shopSchema = new mongoose.Schema(
     },
 
     // Where the shop is in the approval flow
+
     status: {
       type: String,
       enum: ["pending", "approved", "rejected", "suspended"],
       default: "pending",
     },
 
-    // Filled in only when an admin rejects (or suspends) the shop
+    suspensionReason: { type: String },
     rejectionReason: { type: String, trim: true },
 
     // Audit trail: which admin made the decision, and when
