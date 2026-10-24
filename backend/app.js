@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const shopRoutes = require("./routes/shopRoutes");
+const productRoutes = require("./routes/productRoutes");
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use('/api/auth', require('./routes/authRoutes'));
 
 
 app.use("/api/shops", shopRoutes);
+
+app.use("/api/products", productRoutes);
 
 // Error handler: catches errors thrown anywhere in the app
 // (Express recognises it by its 4 parameters)
