@@ -36,6 +36,16 @@ const orderSchema = new mongoose.Schema(
       enum: ["unpaid", "paid", "failed"],
       default: "unpaid",
     },
+    paymentReference: { type: String },
+    paidAt: { type: Date },
+    orderStatus: {
+      type: String,
+      enum: ["active", "cancelled"],
+      default: "active",
+    },
+    cancelledAt: { type: Date },
+    // Set when a PAID order is cancelled, so someone knows to refund it
+    refundRequired: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

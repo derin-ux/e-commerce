@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+const crypto = require("crypto");
 const Order = require("../models/Order");
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
 const Shop = require("../models/Shop");
+
 
 // A small error type so we can send a clear message to the customer
 class CheckoutError extends Error {
@@ -151,7 +153,10 @@ const getShopOrders = async (req, res) => {
       return res.status(404).json({ message: "You don't have a shop yet" });
     }
 
-    const orders = await Order.find({ "items.shop": shop._id }).sort({ createdAt: -1 });
+    const orders = await Order.find({
+        "items.shop": shop._id,
+        paymentStatus: "paid", // shops only see orders that have been paid for
+    }).sort({ createdAt: -1 });
 
     // Strip out the items that belong to OTHER shops
     const result = orders.map((order) => ({
@@ -167,6 +172,8 @@ const getShopOrders = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+
 
 // @desc    Shop owner: update the status of one of MY items in an order
 // @route   PATCH /api/orders/:orderId/items/:itemId/status
@@ -190,6 +197,10 @@ const updateItemStatus = async (req, res) => {
     const order = await Order.findById(req.params.orderId);
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (order.paymentStatus !== "paid") {
+    return res.status(400).json({ message: "This order has not been paid for yet" });
     }
 
     const item = order.items.id(req.params.itemId);
@@ -218,10 +229,149 @@ const updateItemStatus = async (req, res) => {
   }
 };
 
+// @desc    Pay for an order (SIMULATED, no real money involved)
+// @route   POST /api/orders/:id/pay
+// @access  Private (customer)
+const payOrder = async (req, res) => {
+  try {
+    const simulate = req.body.simulate || "success";
+
+    if (!["success", "fail"].includes(simulate)) {
+      return res.status(400).json({ message: 'simulate must be "success" or "fail"' });
+    }
+
+    // Is this my order?
+    const order = await Order.findOne({ _id: req.params.id, customer: req.user._id });
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (order.paymentStatus === "paid") {
+      return res.status(400).json({ message: "This order is already paid" });
+    }
+
+    // ---- The "pretend payment provider" part. Replace this block with a
+    // ---- real provider call (e.g. Paystack) when you go live.
+    const paymentWorked = simulate === "success";
+    // ------------------------------------------------------------------
+
+    if (!paymentWorked) {
+      order.paymentStatus = "failed";
+      await order.save();
+      return res
+        .status(402)
+        .json({ message: "Payment failed. You can try again.", order });
+    }
+
+    if (order.orderStatus === "cancelled") {
+        return res.status(400).json({ message: "This order has been cancelled" });
+    }
+
+    // Only flip to "paid" if it ISN'T already paid. This guards against
+    // the customer double-clicking and paying twice.
+    const paid = await Order.findOneAndUpdate(
+      { _id: order._id, paymentStatus: { $ne: "paid" } },
+      {
+        paymentStatus: "paid",
+        paidAt: new Date(),
+        paymentReference: crypto.randomUUID(),
+      },
+      { new: true }
+    );
+
+    if (!paid) {
+      return res.status(400).json({ message: "This order is already paid" });
+    }
+
+    res.status(200).json(paid);
+  } catch (error) {
+    if (error.name === "CastError") {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
+// @desc    Cancel my order and put the stock back
+// @route   PATCH /api/orders/:id/cancel
+// @access  Private (customer)
+const cancelOrder = async (req, res) => {
+  const session = await mongoose.startSession();
+
+  try {
+    let cancelled;
+
+    await session.withTransaction(async () => {
+      const order = await Order.findOne({
+        _id: req.params.id,
+        customer: req.user._id, // you can only cancel your own
+      }).session(session);
+
+      if (!order) {
+        throw new CheckoutError("Order not found", 404);
+      }
+
+      if (order.orderStatus === "cancelled") {
+        throw new CheckoutError("This order is already cancelled");
+      }
+
+      // Once any shop has shipped its part, it's too late to cancel
+      const alreadyShipped = order.items.some((item) =>
+        ["shipped", "delivered"].includes(item.status)
+      );
+      if (alreadyShipped) {
+        throw new CheckoutError(
+          "Part of this order has already been shipped, so it can no longer be cancelled"
+        );
+      }
+
+      // Put the stock back and mark each item cancelled
+      for (const item of order.items) {
+        await Product.updateOne(
+          { _id: item.product },
+          { $inc: { quantity: item.quantity } },
+          { session }
+        );
+        item.status = "cancelled";
+      }
+
+      order.orderStatus = "cancelled";
+      order.cancelledAt = new Date();
+      if (order.paymentStatus === "paid") {
+        order.refundRequired = true;
+      }
+
+      await order.save({ session });
+      cancelled = order;
+    });
+
+    res.status(200).json({
+      message: cancelled.refundRequired
+        ? "Order cancelled. A refund will need to be processed."
+        : "Order cancelled.",
+      order: cancelled,
+    });
+  } catch (error) {
+    if (error instanceof CheckoutError) {
+      return res.status(error.status).json({ message: error.message });
+    }
+    if (error.name === "CastError") {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    res.status(500).json({ message: "Server error", error: error.message });
+  } finally {
+    session.endSession();
+  }
+};
+
 module.exports = {
   checkout,
   getMyOrders,
   getMyOrderById,
+  cancelOrder,
   getShopOrders,
   updateItemStatus,
+  payOrder
 };
