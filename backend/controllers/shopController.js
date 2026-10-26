@@ -131,4 +131,21 @@ const rejectShop = async (req, res) => {
   }
 };
 
-module.exports = { registerShop, getPendingShops, approveShop, rejectShop };
+const getMyShop = async (req, res) => {
+  try {
+    const shop = await Shop.findOne({ owner: req.user._id });
+
+    if (!shop) {
+      return res
+        .status(404)
+        .json({ message: "You have not registered a shop yet" });
+    }
+
+    res.status(200).json(shop);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
+module.exports = { registerShop, getPendingShops, approveShop, rejectShop , getMyShop};
