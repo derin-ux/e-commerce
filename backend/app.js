@@ -5,7 +5,8 @@ const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const favouriteRoutes = require("./routes/favouriteRoutes");
-app.use("/api/favourites", favouriteRoutes);
+const reportRoutes = require("./routes/reportRoutes");
+
 
 
 const app = express();
@@ -18,14 +19,13 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use("/api/shops", shopRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/favourites", favouriteRoutes);
-
+app.use("/api/reports", reportRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);
