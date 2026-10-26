@@ -4,6 +4,8 @@ const shopRoutes = require("./routes/shopRoutes");
 const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const favouriteRoutes = require("./routes/favouriteRoutes");
+app.use("/api/favourites", favouriteRoutes);
 
 
 const app = express();
@@ -12,32 +14,25 @@ const app = express();
 app.use(cors());           // lets your future frontend (a different origin) call this API
 app.use(express.json());   // turns incoming JSON bodies into req.body
 
-// Health check: a quick way to confirm the server is alive
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// Routes will be plugged in here as you build them, e.g.:
+
 app.use('/api/auth', require('./routes/authRoutes'));
-
-
 app.use("/api/shops", shopRoutes);
-
 app.use("/api/products", productRoutes);
-
 app.use("/api/cart", cartRoutes);
-
 app.use("/api/orders", orderRoutes);
+app.use("/api/favourites", favouriteRoutes);
 
 
-// Error handler: catches errors thrown anywhere in the app
-// (Express recognises it by its 4 parameters)
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(err.status || 500).json({ message: err.message || 'Server error' });
 });
 
-// 404 handler: runs only if no route above matched
+
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
