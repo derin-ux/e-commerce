@@ -7,6 +7,8 @@ const {
   getPendingShops,
   approveShop,
   rejectShop,
+  getApprovedShops,
+  getShopById
 } = require("../controllers/shopController");
 
 const router = express.Router();
@@ -15,6 +17,9 @@ const router = express.Router();
 router.post("/", protect, authorize("shopOwner"), registerShop);
 
 router.get("/my-shop", protect, authorize("shopOwner"), getMyShop);
+
+router.get("/", getApprovedShops);
+router.get("/:id", getShopById);
 
 // Admins
 router.get("/pending", protect, authorize("admin", "superAdmin"), getPendingShops);
