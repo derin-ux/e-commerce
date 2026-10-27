@@ -3,20 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Customer Registration | StyleHub</title>
-
   <link rel="stylesheet" href="registration_customer.css">
-  <script src="register_customer.js" defer></script>
 </head>
 <body>
 
   <header class="header">
     <a href="index.html" class="logo">Style<span>Hub</span></a>
-
-    <a href="shop-owner/login.html" class="owner-link">
-      Shop Owner Login
-    </a>
   </header>
 
   <main class="login-container">
@@ -28,8 +21,7 @@
       <h1>Create <span>Account</span></h1>
 
       <p class="subtitle">
-        Register for a StyleHub account to start shopping
-        and keep track of your orders.
+        Register for a StyleHub account
       </p>
 
       <form id="customerRegisterForm">
@@ -96,13 +88,6 @@
           >
         </div>
 
-        <div class="form-options">
-          <label class="remember">
-            <input type="checkbox" id="agreeTerms" required>
-            I agree to the Terms & Privacy Policy
-          </label>
-        </div>
-
         <button type="submit" class="login-button">
           Create Account
         </button>
@@ -114,7 +99,7 @@
 
       <p class="register-text">
         Already have an account?
-        <a href="customer/login.html">Log in</a>
+        <a href="login.html">Log in</a>
       </p>
 
       <p class="footer-note">
@@ -124,9 +109,8 @@
     </section>
   </main>
 
-  <footer class="footer">
-    © 2026 StyleHub. All rights reserved.
-  </footer>
-
+  <script src="js/api.js"></script>
+  <script src="js/register.js"></script>
+</body>
 </body>
 </html>
