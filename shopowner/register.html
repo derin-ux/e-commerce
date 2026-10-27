@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create your StyleHub seller account and start building your online fashion store.">
+  <title>Become a Seller | StyleHub</title>
+  <link rel="stylesheet" href="shopowner/css/shopowner.css">
+  <script src="js/shopowner.js" defer></script>
+</head>
+<body>
+  <header class="auth-header">
+    <a class="brand" href="../index.html">Style<span>Hub</span></a>
+    <a class="back-link" href="../index.html">← Back to shopping</a>
+  </header>
+
+  <main class="auth-layout">
+    <section class="auth-promo">
+      <p class="eyebrow">SELL ON STYLEHUB</p>
+      <h1>Your fashion business deserves a bigger audience.</h1>
+      <p>Bring your products online, reach new customers and manage your store from one place.</p>
+
+      <div class="promo-points">
+        <p>✓ Create your online shop</p>
+        <p>✓ Manage products and stock</p>
+        <p>✓ Track orders and sales reports</p>
+      </div>
+    </section>
+
+    <section class="auth-panel">
+      <div class="form-heading">
+        <p class="eyebrow">SELLER ACCOUNT</p>
+        <h2>Create your shop account</h2>
+        <p>Enter your details to get started.</p>
+      </div>
+
+      <form id="sellerRegisterForm" novalidate>
+        <div class="form-field">
+          <label for="ownerName">Owner's full name</label>
+          <input id="ownerName" name="ownerName" type="text"
+                 autocomplete="name" placeholder="e.g. Ada Okafor" required>
+          <small class="field-error" id="ownerNameError"></small>
+        </div>
+
+        <div class="form-field">
+          <label for="shopName">Shop name</label>
+          <input id="shopName" name="shopName" type="text"
+                 autocomplete="organization" placeholder="e.g. Ada's Fashion House" required>
+          <small class="field-error" id="shopNameError"></small>
+        </div>
+
+        <div class="form-field">
+          <label for="sellerEmail">Business email</label>
+          <input id="sellerEmail" name="email" type="email"
+                 autocomplete="email" placeholder="you@example.com" required>
+          <small class="field-error" id="sellerEmailError"></small>
+        </div>
+
+        <div class="form-field">
+          <label for="sellerPhone">Phone number</label>
+          <input id="sellerPhone" name="phone" type="tel"
+                 autocomplete="tel" placeholder="e.g. 08012345678" required>
+          <small class="field-error" id="sellerPhoneError"></small>
+        </div>
+
+        <div class="form-field">
+          <label for="shopCategory">Main product category</label>
+          <select id="shopCategory" name="category" required>
+            <option value="">Select a category</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Shoes">Shoes</option>
+            <option value="Bags">Bags</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Jewelry">Jewelry</option>
+            <option value="Sportswear">Sportswear</option>
+            <option value="Other">Other</option>
+          </select>
+          <small class="field-error" id="shopCategoryError"></small>
+        </div>
+
+        <div class="form-field">
+          <label for="sellerPassword">Create password</label>
+          <div class="password-wrap">
+            <input id="sellerPassword" name="password" type="password"
+                   autocomplete="new-password" placeholder="At least 8 characters" required>
+            <button type="button" class="toggle-password"
+                    data-toggle="sellerPassword">Show</button>
+          </div>
+          <small class="field-hint">Use uppercase, lowercase, a number and a special character.</small>
+          <small class="field-error" id="sellerPasswordError"></small>
+        </div>
+
+        <div class="form-field">
+          <label for="confirmPassword">Confirm password</label>
+          <div class="password-wrap">
+            <input id="confirmPassword" name="confirmPassword" type="password"
+                   autocomplete="new-password" placeholder="Enter password again" required>
+            <button type="button" class="toggle-password"
+                    data-toggle="confirmPassword">Show</button>
+          </div>
+          <small class="field-error" id="confirmPasswordError"></small>
+        </div>
+
+        <label class="terms-check">
+          <input type="checkbox" id="sellerTerms" required>
+          <span>I agree to the <a href="#terms">Seller Terms</a> and platform policies.</span>
+        </label>
+        <small class="field-error" id="sellerTermsError"></small>
+
+        <div class="form-message" id="registerMessage" role="status" aria-live="polite"></div>
+
+        <button class="submit-button" type="submit" id="registerButton">
+          Create Seller Account
+        </button>
+      </form>
+
+      <p class="form-switch">
+        Already have a seller account?
+        <a href="login.html">Log in</a>
+      </p>
+
+      <p class="approval-note">
+        Shop registration does not automatically publish your store.
+        Your shop will need approval before selling.
+      </p>
+    </section>
+  </main>
+
+  <footer class="auth-footer">
+    © 2026 StyleHub. Fashion for Everyone.
+  </footer>
+</body>
+</html>

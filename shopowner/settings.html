@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Settings | StyleHub</title>
+  <link rel="stylesheet" href="shopowner/css/dashboard.css">
+  <script src="js/settings.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <h2 class="logo">StyleHub</h2>
+    <p class="sidebar-label">SHOP MANAGEMENT</p>
+    <a class="nav-link" href="dashbord.html">Dashboard</a>
+    <a class="nav-link" href="products.html">My Products</a>
+    <a class="nav-link" href="orders.html">Orders</a>
+    <a class="nav-link active" href="settings.html">Shop Settings</a>
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div>
+        <h1>Shop Settings</h1>
+        <p>Manage your store's public information.</p>
+      </div>
+      <a class="primary-btn" href="dashboard.html">Back to Dashboard</a>
+    </header>
+
+    <section class="panel">
+      <h2 style="margin-bottom:20px">Store Information</h2>
+
+      <form id="settingsForm">
+        <label for="shopName">Shop Name</label>
+        <input id="shopName" name="shopName" required maxlength="100">
+
+        <label for="description">Shop Description</label>
+        <textarea id="description" name="description"
+          rows="4" maxlength="1000"></textarea>
+
+        <label for="email">Contact Email</label>
+        <input id="email" name="email" type="email" required>
+
+        <label for="phone">Phone Number</label>
+        <input id="phone" name="phone" type="tel" required maxlength="20">
+
+        <label for="location">Shop Location</label>
+        <input id="location" name="location" placeholder="e.g. Lagos, Nigeria">
+
+        <button class="primary-btn" type="submit">Save Settings</button>
+        <p id="settingsMessage" role="status" style="margin-top:15px"></p>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seller Login | StyleHub</title>
+  <link rel="stylesheet" href="shopowner/css/shopowner.css">
+  <script src="js/shopowner.js" defer></script>
+</head>
+<body>
+  <header class="auth-header">
+    <a class="brand" href="../index.html">Style<span>Hub</span></a>
+    <a class="back-link" href="../index.html">← Back to shopping</a>
+  </header>
+
+  <main class="login-layout">
+    <section class="auth-promo login-promo">
+      <p class="eyebrow">WELCOME BACK</p>
+      <h1>Your store. Your style. Your next opportunity.</h1>
+      <p>Sign in to manage your products, keep track of orders and grow your fashion business.</p>
+    </section>
+
+    <section class="auth-panel login-panel">
+      <div class="form-heading">
+        <p class="eyebrow">SELLER PORTAL</p>
+        <h2>Log in to your shop</h2>
+        <p>Use the email and password for your seller account.</p>
+      </div>
+
+      <form id="sellerLoginForm" novalidate>
+        <div class="form-field">
+          <label for="loginEmail">Email address</label>
+          <input id="loginEmail" name="email" type="email"
+                 autocomplete="username" placeholder="you@example.com" required>
+          <small class="field-error" id="loginEmailError"></small>
+        </div>
+
+        <div class="form-field">
+          <label for="loginPassword">Password</label>
+          <div class="password-wrap">
+            <input id="loginPassword" name="password" type="password"
+                   autocomplete="current-password" placeholder="Enter your password" required>
+            <button type="button" class="toggle-password"
+                    data-toggle="loginPassword">Show</button>
+          </div>
+          <small class="field-error" id="loginPasswordError"></small>
+        </div>
+
+        <div class="login-options">
+          <label class="remember-check">
+            <input type="checkbox" id="rememberSeller">
+            <span>Remember me</span>
+          </label>
+          <a href="#forgot-password" id="forgotPasswordLink">Forgot password?</a>
+        </div>
+
+        <div class="form-message" id="loginMessage" role="status" aria-live="polite"></div>
+
+        <button class="submit-button" type="submit">Log In</button>
+      </form>
+
+      <p class="form-switch">
+        Don't have a seller account?
+        <a href="register.html">Register your shop</a>
+      </p>
+
+      <p class="approval-note">
+        Only registered shop owners can use this portal.
+      </p>
+    </section>
+  </main>
+
+  <footer class="auth-footer">
+    © 2026 StyleHub. Fashion for Everyone.
+  </footer>
+</body>
+</html>

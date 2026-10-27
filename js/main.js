@@ -269,3 +269,52 @@ if (newsletterForm) {
 
 // 9. Load featured products when the page opens
 displayProducts(products);
+
+/* =================================
+   CATEGORY FILTERING
+================================= */
+
+const categoryCards = document.querySelectorAll(
+  ".category-card[data-category]"
+);
+
+categoryCards.forEach(card => {
+  card.addEventListener("click", event => {
+    event.preventDefault();
+
+    const selectedCategory = card.dataset.category;
+
+    // Find products belonging to this category.
+    const matchingProducts = products.filter(product =>
+      product.category.toLowerCase() ===
+      selectedCategory.toLowerCase()
+    );
+
+    // Display the matching products.
+    displayProducts(matchingProducts);
+
+    // Update the search field, if it exists.
+    if (searchInput) {
+      searchInput.value = "";
+    }
+
+    // Scroll down to the products.
+    document.getElementById("products")?.scrollIntoView({
+      behavior: "smooth"
+    });
+  });
+});
+
+// View All Categories button
+const viewAllButton = document.getElementById(
+  "viewAllCategories"
+);
+
+if (viewAllButton) {
+  viewAllButton.addEventListener("click", () => {
+    // Show every category card.
+    document.getElementById("categories")?.scrollIntoView({
+      behavior: "smooth"
+    });
+  });
+}

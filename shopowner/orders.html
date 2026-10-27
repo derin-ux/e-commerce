@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop Orders | StyleHub</title>
+  <link rel="stylesheet" href="shopowner/css/dashboard.css">
+  <script src="js/orders.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <h2 class="logo">StyleHub</h2>
+    <p class="sidebar-label">SHOP MANAGEMENT</p>
+    <a class="nav-link" href="dashbord.html">Dashboard</a>
+    <a class="nav-link" href="products.html">My Products</a>
+    <a class="nav-link active" href="orders.html">Orders</a>
+    <a class="nav-link" href="settings.html">Shop Settings</a>
+    <button class="logout-btn" id="logoutBtn">Logout</button>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div>
+        <h1>Customer Orders</h1>
+        <p>Review and update the status of your orders.</p>
+      </div>
+      <a class="primary-btn" href="dashboard.html">Back to Dashboard</a>
+    </header>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <h2>All Orders</h2>
+      </div>
+
+      <div style="overflow-x:auto">
+        <table style="width:100%; border-collapse:collapse; text-align:left">
+          <thead>
+            <tr>
+              <th style="padding:12px">Order ID</th>
+              <th style="padding:12px">Customer</th>
+              <th style="padding:12px">Amount</th>
+              <th style="padding:12px">Status</th>
+              <th style="padding:12px">Update</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTable">
+            <tr>
+              <td colspan="5" style="padding:16px">
+                No orders yet.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
