@@ -31,8 +31,20 @@ const productSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    subcategory: {
+      type: String,
+      trim: true,
+    },
+    sizes: {
+      type: [String],
+      default: [],
+    },
+    colors: {
+      type: [String],
+      default: [],
+    },
     images: {
-      type: [String], // array of image URLs
+      type: [String], // image URLs, or data URLs in this demo
       default: [],
     },
   },

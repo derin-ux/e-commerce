@@ -10,10 +10,11 @@ const reportRoutes = require("./routes/reportRoutes");
 
 
 const app = express();
+app.set("trust proxy", 1);
 
 // Middleware: runs on every request before it reaches a route
-app.use(cors());           // lets your future frontend (a different origin) call this API
-app.use(express.json());   // turns incoming JSON bodies into req.body
+app.use(cors());      
+app.use(express.json({ limit: "2mb" }));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
