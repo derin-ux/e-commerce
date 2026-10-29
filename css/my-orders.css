@@ -1,0 +1,191 @@
+/* My Orders page: extends categories.css, cart.css and checkout.css */
+
+.orders-section {
+  padding: 35px 6% 55px;
+  min-height: 320px;
+}
+
+.orders-list {
+  display: grid;
+  gap: 18px;
+}
+
+/* ---------- one order card ---------- */
+.order-card {
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--white);
+  overflow: hidden;
+}
+
+.order-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--background);
+  border-bottom: 1px solid var(--border);
+}
+
+.order-head h3 {
+  font-size: 16px;
+}
+
+.order-date {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.order-body {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 22px;
+  padding: 18px 20px;
+}
+
+.order-body h4 {
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+/* items: name x qty, line price, and that item's own status */
+.order-items {
+  list-style: none;
+}
+
+.order-items li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.order-items li:last-child {
+  border-bottom: 0;
+}
+
+.order-items .item-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.order-items .item-price {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.order-address {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.order-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+}
+
+.order-total {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.order-total span {
+  color: var(--green);
+}
+
+.order-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* The shared button styles are full-width; here they sit side by side */
+.order-actions .checkout-button,
+.order-actions .secondary-button {
+  display: inline-block;
+  width: auto;
+  margin-top: 0;
+  padding: 10px 18px;
+  font-size: 13px;
+}
+
+.order-note {
+  flex-basis: 100%;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ---------- extra status colours (base .status-pill is in checkout.css) ---------- */
+.status-pill.info {
+  background: #e7f0fb;
+  color: #1c4f8a;
+}
+
+.status-pill.neutral {
+  background: #eef0ee;
+  color: #4d5a52;
+}
+
+.status-pill.cancelled {
+  background: #fdf0ef;
+  color: #b3261e;
+}
+
+.item-status {
+  font-size: 11px;
+  padding: 3px 9px;
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 700px) {
+  .order-body {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 520px) {
+  .orders-section {
+    padding: 28px 5% 40px;
+  }
+
+  .order-head,
+  .order-body,
+  .order-foot {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .order-items li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .order-items .item-status {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .order-actions {
+    width: 100%;
+  }
+
+  .order-actions .checkout-button,
+  .order-actions .secondary-button {
+    flex: 1;
+    text-align: center;
+  }
+}

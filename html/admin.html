@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | StyleHub</title>
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <a href="dashboard.html" class="brand">Style<span>Hub</span></a>
+    <p class="sidebar-label">ADMINISTRATION</p>
+
+    <a href="dashboard.html" class="nav-link active">▦ Dashboard</a>
+    <a href="user.html" class="nav-link">♙ Users</a>
+    <a href="shop.html" class="nav-link">▣ Shop Owners</a>
+    <a href="product.html" class="nav-link">◇ Products</a>
+    <a href="order.html" class="nav-link">▤ Orders</a>
+    <a href="report.html" class="nav-link">▥ Reports</a>
+    <a href="admin.html" class="nav-link" id="adminManagementLink">
+      ♧ Admin Management
+    </a>
+
+    <button href="login.html" id="logoutBtn" class="logout-btn" >↪ Logout</button>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">STYLEHUB MANAGEMENT</p>
+        <h1>Admin Dashboard</h1>
+        <p class="muted">Monitor and manage your fashion marketplace.</p>
+      </div>
+
+      <div class="profile">
+        <div class="avatar">A</div>
+        <div>
+          <strong id="adminName">Administrator</strong>
+          <p id="adminRole">Admin</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="welcome">
+      <div>
+        <h2>Welcome to StyleHub</h2>
+        <p>Here is an overview of your marketplace activity.</p>
+      </div>
+      <span class="status">Admin Panel</span>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card">
+        <div class="stat-top">
+          <span>Total Customers</span>
+          <span class="stat-icon">♙</span>
+        </div>
+        <h2 id="customerCount">0</h2>
+        <p>Registered customer accounts</p>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span>Shop Owners</span>
+          <span class="stat-icon">▣</span>
+        </div>
+        <h2 id="shopCount">0</h2>
+        <p>Registered sellers</p>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span>Total Products</span>
+          <span class="stat-icon">◇</span>
+        </div>
+        <h2 id="productCount">0</h2>
+        <p>Products submitted to StyleHub</p>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span>Total Orders</span>
+          <span class="stat-icon">▤</span>
+        </div>
+        <h2 id="orderCount">0</h2>
+        <p>Orders recorded</p>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Shop Reviews</h2>
+            <p>Shops waiting for administrator approval.</p>
+          </div>
+        </div>
+
+        <div class="review-summary">
+          <div>
+            <span class="review-number" id="pendingShopCount">0</span>
+            <p>Pending approval</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Sales Overview</h2>
+            <p>Based on completed demo orders.</p>
+          </div>
+        </div>
+
+        <p class="sales-label">Recorded Sales</p>
+        <h2 class="sales-total" id="salesTotal">₦0</h2>
+        <p class="muted">Prototype data only</p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Pending Shops</h2>
+          <p>Approve or reject new shops.</p>
+        </div>
+      </div>
+
+      <p id="adminMessage" role="status" aria-live="polite"></p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Shop</th>
+              <th>Owner</th>
+              <th>Contact</th>
+              <th>Submitted</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="pendingShopsTable">
+            <tr>
+              <td colspan="5" class="empty-state">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel" id="createAdminSection" hidden>
+      <div class="panel-heading">
+        <div>
+          <h2>Create Admin</h2>
+          <p>Only super admins can add administrators.</p>
+        </div>
+      </div>
+
+      <form id="createAdminForm">
+        <label for="newAdminName">Name</label>
+        <input id="newAdminName" required>
+
+        <label for="newAdminEmail">Email</label>
+        <input id="newAdminEmail" type="email" required>
+
+        <label for="newAdminPassword">Password (at least 8 characters)</label>
+        <input id="newAdminPassword" type="password" minlength="8" required>
+
+        <button class="primary-btn" type="submit">Create Admin</button>
+        <p id="createAdminMessage" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="panel recent-panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Recent Orders</h2>
+          <p>Latest orders available in the demo data.</p>
+        </div>
+        <a href="order.html">View all orders</a>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recentOrders">
+            <tr>
+              <td colspan="4" class="empty-state">
+                No orders available yet.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer">
+      StyleHub Admin Panel · 2026
+    </footer>
+  </main>
+
+  <script src="../js/api.js" defer></script>
+  <script src="../js/admin.js" defer></script>
+</body>
+</html>

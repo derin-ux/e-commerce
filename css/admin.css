@@ -1,0 +1,511 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --green: #078653;
+  --dark-green: #102b1b;
+  --background: #f5f7f6;
+  --text: #1b2921;
+  --muted: #748078;
+  --border: #e3e9e5;
+  --white: #ffffff;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  color: var(--text);
+}
+
+.sidebar {
+  width: 245px;
+  height: 100vh;
+  position: fixed;
+  inset: 0 auto 0 0;
+  padding: 28px 18px;
+  background: var(--dark-green);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.brand {
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+  text-decoration: none;
+  margin-bottom: 30px;
+}
+
+.brand span {
+  color: #37cf77;
+}
+
+.sidebar-label,
+.eyebrow {
+  color: #91a99a;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+}
+
+.sidebar-label {
+  margin-bottom: 10px;
+}
+
+.nav-link {
+  color: #dbe7df;
+  text-decoration: none;
+  padding: 13px 12px;
+  border-radius: 7px;
+  font-size: 14px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background: #245638;
+  color: white;
+}
+
+.logout-btn {
+  margin-top: auto;
+  padding: 13px;
+  background: transparent;
+  color: white;
+  border: 1px solid #557561;
+  border-radius: 7px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.main-content {
+  margin-left: 245px;
+  padding: 32px;
+  max-width: 1800px;
+}
+
+.topbar,
+.profile,
+.panel-heading,
+.stat-top,
+.welcome,
+.review-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.topbar {
+  margin-bottom: 28px;
+}
+
+.topbar h1 {
+  font-size: 29px;
+  margin: 10px 0;
+}
+
+.muted,
+.stat-card p,
+.panel-heading p,
+.welcome p,
+.review-summary p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.profile {
+  justify-content: flex-start;
+}
+
+.avatar {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #dff3e6;
+  color: var(--green);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.profile p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.welcome {
+  background: #e4f4e9;
+  border: 1px solid #d1ead9;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.welcome h2 {
+  margin-bottom: 8px;
+}
+
+.status {
+  background: white;
+  color: var(--green);
+  border-radius: 20px;
+  padding: 9px 13px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.stat-card,
+.panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 22px;
+  box-shadow: 0 4px 16px #15291b05;
+}
+
+.stat-top {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.stat-icon {
+  width: 35px;
+  height: 35px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: #e5f5eb;
+  color: var(--green);
+  font-size: 20px;
+}
+
+.stat-card h2 {
+  font-size: 29px;
+  margin: 20px 0 9px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.panel-heading {
+  align-items: flex-start;
+  margin-bottom: 22px;
+}
+
+.panel-heading h2 {
+  font-size: 18px;
+  margin-bottom: 7px;
+}
+
+.panel-heading a {
+  color: var(--green);
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.review-summary {
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+}
+
+.review-number {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.primary-btn {
+  display: inline-block;
+  border: none;
+  border-radius: 7px;
+  background: var(--green);
+  color: white;
+  padding: 12px 15px;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #05683f;
+}
+
+.sales-label {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 10px 0;
+}
+
+.sales-total {
+  color: var(--green);
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.recent-panel {
+  margin-top: 24px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+
+th,
+td {
+  padding: 15px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+th {
+  background: #f7f9f7;
+  color: #59665d;
+  font-weight: 600;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--muted);
+  padding: 25px;
+}
+
+.order-status {
+  display: inline-block;
+  padding: 6px 9px;
+  border-radius: 20px;
+  background: #e5f5eb;
+  color: var(--green);
+  font-size: 11px;
+}
+
+.footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 30px;
+  padding: 15px;
+}
+
+@media (max-width: 1100px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .main-content > .panel {
+    margin-top: 16px;
+  }
+
+  #pendingShopsTable button {
+    display: block;
+    width: 100%;
+  }
+
+  #pendingShopsTable button + button {
+    margin: 6px 0 0;
+  }
+
+  #createAdminForm {
+    max-width: none;
+  }
+  .sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .brand {
+    margin-bottom: 12px;
+  }
+
+  .logout-btn {
+    margin-top: 10px;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 18px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .welcome {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .stats-grid {
+    gap: 10px;
+  }
+
+  .stat-card,
+  .panel {
+    padding: 15px;
+  }
+
+  .stat-card h2 {
+    font-size: 24px;
+  }
+
+  .stat-top {
+    align-items: flex-start;
+  }
+
+  .review-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+/* ---------- New sections: Pending Shops + Create Admin ---------- */
+
+/* Spacing between the full-width panels stacked in the main area */
+.main-content > .panel {
+  margin-top: 24px;
+}
+
+/* Status line under the panel heading ("Shop approved", errors) */
+#adminMessage,
+#createAdminMessage {
+  min-height: 20px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Shop name, owner and contact cells: second line is the small grey text */
+#pendingShopsTable td small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Approve / Reject buttons in the table */
+#pendingShopsTable button {
+  padding: 8px 13px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#pendingShopsTable button + button {
+  margin-left: 6px;
+}
+
+#pendingShopsTable button[data-action="approve"] {
+  border: 1px solid var(--green);
+  background: var(--green);
+  color: var(--white);
+}
+
+#pendingShopsTable button[data-action="approve"]:hover:not(:disabled) {
+  background: #05683f;
+}
+
+#pendingShopsTable button[data-action="reject"] {
+  border: 1px solid #e3b4b0;
+  background: var(--white);
+  color: #b3261e;
+}
+
+#pendingShopsTable button[data-action="reject"]:hover:not(:disabled) {
+  background: #fdf0ef;
+}
+
+#pendingShopsTable button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Create Admin form */
+#createAdminForm {
+  display: grid;
+  gap: 8px;
+  max-width: 420px;
+}
+
+#createAdminForm label {
+  margin-top: 8px;
+  color: #59665d;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#createAdminForm input {
+  width: 100%;
+  padding: 12px 13px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--white);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+
+#createAdminForm input:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px #07865322;
+}
+
+#createAdminForm .primary-btn {
+  justify-self: start;
+  margin-top: 14px;
+}
+
+/* Small screens: let the action buttons stack instead of overflowing */
+@media (max-width: 700px) {
+  .main-content > .panel {
+    margin-top: 16px;
+  }
+
+  #pendingShopsTable button {
+    display: block;
+    width: 100%;
+  }
+
+  #pendingShopsTable button + button {
+    margin: 6px 0 0;
+  }
+
+  #createAdminForm {
+    max-width: none;
+  }
+}

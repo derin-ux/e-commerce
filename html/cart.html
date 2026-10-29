@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart | StyleHub</title>
+  <meta name="description" content="Review the items in your StyleHub cart.">
+
+  <link rel="stylesheet" href="../css/categories.css">
+  <link rel="stylesheet" href="../css/cart.css">
+  <script src="js/cart.js" defer></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <a href="index.html" class="brand">Style<span>Hub</span></a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="categories.html">Categories</a>
+      <a href="cart.html" class="active">Cart (<span id="cartCount">0</span>)</a>
+    </nav>
+
+    <a href="login.html" class="seller-link" id="authLink">Login</a>
+  </header>
+
+  <main>
+    <section class="category-hero cart-hero">
+      <p class="eyebrow">REVIEW YOUR ORDER</p>
+      <h1>Your Cart</h1>
+    </section>
+
+    <section class="cart-section">
+      <p class="cart-message" id="cartMessage" role="status" aria-live="polite"></p>
+
+      <div class="cart-layout" id="cartLayout" hidden>
+        <div class="cart-items" id="cartItems"></div>
+
+        <aside class="cart-summary" aria-label="Order summary">
+          <h2>Order Summary</h2>
+          <div class="summary-row">
+            <span>Items</span>
+            <span id="summaryCount">0</span>
+          </div>
+          <div class="summary-row total-row">
+            <span>Total</span>
+            <span id="summaryTotal">₦0</span>
+          </div>
+          <p class="summary-note">Final prices are confirmed at checkout.</p>
+          <a href="checkout.html" class="checkout-button" id="checkoutButton">
+            Proceed to Checkout
+          </a>
+          <a href="categories.html" class="continue-link">← Continue shopping</a>
+        </aside>
+      </div>
+
+      <div class="empty-state" id="emptyCart" hidden>
+        <p id="emptyCartText">Your cart is empty.</p>
+        <a href="categories.html" class="continue-link">Browse categories →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <a href="index.html" class="brand footer-brand">
+        Style<span>Hub</span>
+      </a>
+      <p>Fashion for everyone.</p>
+    </div>
+
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="categories.html">Categories</a>
+    </div>
+
+    <p class="copyright">© 2026 StyleHub. All rights reserved.</p>
+  </footer>
+
+  <script src="../js/api.js" defer></script>
+  <script src="../js/cart.js" defer></script>
+
+</body>
+</html>
