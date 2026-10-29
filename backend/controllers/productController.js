@@ -1,3 +1,4 @@
+const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const Product = require("../models/Product");
 const Shop = require("../models/Shop");
 
@@ -61,9 +62,20 @@ const getProducts = async (req, res) => {
   }
 };
 
-// @desc    Get one product (only if its shop is approved)
-// @route   GET /api/products/:id
-// @access  Public
+
+const getMyProducts = async (req, res) => {
+  try {
+    const shop = await Shop.findOne({ owner: req.user._id });
+    if (!shop) return res.status(200).json([]);
+
+    const products = await Product.find({ shop: shop._id }).sort({ createdAt: -1 });
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id).populate(
@@ -155,6 +167,7 @@ const deleteProduct = async (req, res) => {
 module.exports = {
   createProduct,
   getProducts,
+  getMyProducts,
   getProductById,
   updateProduct,
   deleteProduct,

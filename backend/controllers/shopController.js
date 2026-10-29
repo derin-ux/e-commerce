@@ -185,4 +185,43 @@ const getShopById = async (req, res) => {
   }
 };
 
-module.exports = { registerShop, getPendingShops, approveShop, rejectShop , getMyShop, getApprovedShops, getShopById};
+// @desc    Owner updates their own shop's info
+// @route   PATCH /api/shops/my-shop
+// @access  Private (shopOwner)
+const updateMyShop = async (req, res) => {
+  try {
+    const shop = await Shop.findOne({ owner: req.user._id });
+    if (!shop) {
+      return res.status(404).json({ message: "You have not registered a shop yet" });
+    }
+
+    // Only these fields can be changed by the owner (never status or owner)
+    const allowed = ["name", "description", "logo", "contactEmail", "contactPhone", "address"];
+    allowed.forEach((field) => {
+      if (req.body[field] !== undefined) {
+        shop[field] = req.body[field];
+      }
+    });
+
+    // A rejected shop that is edited goes back into the review queue
+    if (shop.status === "rejected") {
+      shop.status = "pending";
+      shop.rejectionReason = undefined;
+      shop.reviewedBy = undefined;
+      shop.reviewedAt = undefined;
+    }
+
+    await shop.save();
+    res.status(200).json({ message: "Shop updated", shop });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({ message: "A shop with that name already exists" });
+    }
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: error.message });
+    }
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+module.exports = { registerShop, getPendingShops, approveShop, rejectShop , getMyShop, getApprovedShops, getShopById, updateMyShop};

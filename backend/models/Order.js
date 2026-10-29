@@ -30,7 +30,7 @@ const orderSchema = new mongoose.Schema(
       city: { type: String, required: true, trim: true },
       state: { type: String, required: true, trim: true },
     },
-    // Payment is simulated for now; we'll build that part after orders work
+    // Payment is simulated for now
     paymentStatus: {
       type: String,
       enum: ["unpaid", "paid", "failed"],

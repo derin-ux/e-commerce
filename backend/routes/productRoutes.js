@@ -7,7 +7,11 @@ const {
   getProductById,
   updateProduct,
   deleteProduct,
+  getMyProducts,
 } = require("../controllers/productController");
+
+// Shop owner's own products (must stay ABOVE "/:id")
+router.get("/mine", protect, authorize("shopOwner"), getMyProducts);
 
 // Public
 router.get("/", getProducts);
