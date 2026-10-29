@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment | StyleHub</title>
+
+  <link rel="stylesheet" href="css/categories.css">
+  <link rel="stylesheet" href="css/cart.css">
+  <link rel="stylesheet" href="css/checkout.css">
+  <script src="js/api.js" defer></script>
+  <script src="js/payment.js" defer></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <a href="index.html" class="brand">Style<span>Hub</span></a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="categories.html">Categories</a>
+      <a href="cart.html">Cart</a>
+    </nav>
+
+    <a href="index.html" class="seller-link">Continue shopping</a>
+  </header>
+
+  <main>
+    <section class="category-hero cart-hero">
+      <p class="eyebrow">LAST STEP</p>
+      <h1>Payment</h1>
+    </section>
+
+    <section class="cart-section">
+      <p class="cart-message" id="paymentMessage" role="status" aria-live="polite"></p>
+
+      <div class="cart-layout" id="paymentLayout" hidden>
+        <section class="checkout-card">
+          <h2>Order <span id="orderRef"></span></h2>
+          <p>Check your order, then pay to confirm it.</p>
+
+          <h3 class="detail-heading">Items</h3>
+          <ul class="summary-items" id="orderItems"></ul>
+
+          <h3 class="detail-heading">Delivering to</h3>
+          <p class="detail-text" id="shipTo"></p>
+        </section>
+
+        <aside class="cart-summary" aria-label="Payment">
+          <h2>Payment</h2>
+          <div class="summary-row">
+            <span>Status</span>
+            <span id="payStatus" class="status-pill">Unpaid</span>
+          </div>
+          <div class="summary-row total-row">
+            <span>Total</span>
+            <span id="payTotal">₦0</span>
+          </div>
+          <p class="summary-note">This is a demo. No real money is taken.</p>
+
+          <button type="button" class="checkout-button" id="payButton">Pay now</button>
+          <button type="button" class="secondary-button" id="failButton">
+            Demo: simulate a failed payment
+          </button>
+          <button type="button" class="secondary-button danger" id="cancelButton">
+            Cancel order
+          </button>
+        </aside>
+      </div>
+
+      <div class="result-panel" id="resultPanel" hidden>
+        <h2 id="resultTitle"></h2>
+        <p id="resultText"></p>
+        <p class="result-ref" id="resultRef" hidden></p>
+        <div class="result-actions">
+          <a href="index.html" class="checkout-button">Continue shopping</a>
+          <a href="my-orders.html" class="continue-link">View my orders →</a>
+        </div>
+      </div>
+
+      <div class="empty-state" id="emptyPayment" hidden>
+        <p id="emptyPaymentText"></p>
+        <a href="cart.html" class="continue-link">Go to cart →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <a href="index.html" class="brand footer-brand">Style<span>Hub</span></a>
+      <p>Fashion for everyone.</p>
+    </div>
+
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="categories.html">Categories</a>
+    </div>
+
+    <p class="copyright">© 2026 StyleHub. All rights reserved.</p>
+  </footer>
+</body>
+</html>

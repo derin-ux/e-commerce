@@ -4,7 +4,7 @@ const submitBtn = form.querySelector("button[type='submit']");
 
 const roleHome = {
   customer: "index.html",
-  shopOwner: "shop-dashboard.html",
+  shopOwner: "dashboard.html",
   admin: "admin.html",
   superAdmin: "admin.html",
 };

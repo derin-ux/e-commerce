@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | StyleHub</title>
+
+  <link rel="stylesheet" href="css/categories.css">
+  <link rel="stylesheet" href="css/cart.css">
+  <link rel="stylesheet" href="css/checkout.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <a href="index.html" class="brand">Style<span>Hub</span></a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="categories.html">Categories</a>
+      <a href="cart.html">Cart</a>
+    </nav>
+
+    <a href="cart.html" class="seller-link">← Back to cart</a>
+  </header>
+
+  <main>
+    <section class="category-hero cart-hero">
+      <p class="eyebrow">ALMOST THERE</p>
+      <h1>Checkout</h1>
+    </section>
+
+    <section class="cart-section">
+      <p class="cart-message" id="checkoutMessage" role="status" aria-live="polite"></p>
+
+      <div class="cart-layout" id="checkoutLayout" hidden>
+        <section class="checkout-card">
+          <h2>Shipping Details</h2>
+          <p>Where should we deliver your order?</p>
+
+          <form id="checkoutForm" novalidate>
+            <div class="form-grid">
+              <div class="form-field full">
+                <label for="fullName">Full name</label>
+                <input id="fullName" type="text" autocomplete="name" placeholder="e.g. Ada Okafor">
+                <small class="field-error" id="fullNameError"></small>
+              </div>
+
+              <div class="form-field full">
+                <label for="phone">Phone number</label>
+                <input id="phone" type="tel" autocomplete="tel" placeholder="e.g. 08012345678">
+                <small class="field-error" id="phoneError"></small>
+              </div>
+
+              <div class="form-field full">
+                <label for="address">Street address</label>
+                <input id="address" type="text" autocomplete="street-address" placeholder="House number and street">
+                <small class="field-error" id="addressError"></small>
+              </div>
+
+              <div class="form-field">
+                <label for="city">City</label>
+                <input id="city" type="text" autocomplete="address-level2" placeholder="e.g. Ikeja">
+                <small class="field-error" id="cityError"></small>
+              </div>
+
+              <div class="form-field">
+                <label for="state">State</label>
+                <input id="state" type="text" autocomplete="address-level1" placeholder="e.g. Lagos">
+                <small class="field-error" id="stateError"></small>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <aside class="cart-summary" aria-label="Order summary">
+          <h2>Order Summary</h2>
+          <ul class="summary-items" id="summaryItems"></ul>
+
+          <div class="summary-row">
+            <span>Items</span>
+            <span id="summaryCount">0</span>
+          </div>
+          <div class="summary-row total-row">
+            <span>Total</span>
+            <span id="summaryTotal">₦0</span>
+          </div>
+          <p class="summary-note">You will pay on the next step.</p>
+
+          <button type="submit" form="checkoutForm" class="checkout-button" id="placeOrderButton">
+            Place Order
+          </button>
+          <a href="cart.html" class="continue-link">← Edit cart</a>
+        </aside>
+      </div>
+
+      <div class="empty-state" id="emptyCheckout" hidden>
+        <p id="emptyCheckoutText">Your cart is empty.</p>
+        <a href="categories.html" class="continue-link">Browse categories →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <a href="index.html" class="brand footer-brand">Style<span>Hub</span></a>
+      <p>Fashion for everyone.</p>
+    </div>
+
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="categories.html">Categories</a>
+    </div>
+
+    <p class="copyright">© 2026 StyleHub. All rights reserved.</p>
+  </footer>
+
+    <script src="js/api.js" defer></script>
+    <script src="js/checkout.js" defer></script>
+
+</body>
+</html>

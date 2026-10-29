@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders | StyleHub</title>
+  <meta name="description" content="Track and manage your StyleHub orders.">
+
+  <link rel="stylesheet" href="css/categories.css">
+  <link rel="stylesheet" href="css/cart.css">
+  <link rel="stylesheet" href="css/checkout.css">
+  <link rel="stylesheet" href="css/my-orders.css">
+  <script src="js/api.js" defer></script>
+  <script src="js/my-orders.js" defer></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <a href="index.html" class="brand">Style<span>Hub</span></a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="categories.html">Categories</a>
+      <a href="cart.html">Cart</a>
+      <a href="my-orders.html" class="active">My Orders</a>
+    </nav>
+
+    <a href="login.html" class="seller-link" id="authLink">Login</a>
+  </header>
+
+  <main>
+    <section class="category-hero cart-hero">
+      <p class="eyebrow">YOUR PURCHASES</p>
+      <h1>My Orders</h1>
+    </section>
+
+    <section class="orders-section">
+      <p class="cart-message" id="ordersMessage" role="status" aria-live="polite"></p>
+
+      <div class="category-tabs" id="orderTabs" aria-label="Filter orders" hidden>
+        <button type="button" class="category-tab active" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="category-tab" data-filter="unpaid" aria-pressed="false">Awaiting payment</button>
+        <button type="button" class="category-tab" data-filter="active" aria-pressed="false">In progress</button>
+        <button type="button" class="category-tab" data-filter="delivered" aria-pressed="false">Delivered</button>
+        <button type="button" class="category-tab" data-filter="cancelled" aria-pressed="false">Cancelled</button>
+      </div>
+
+      <div class="orders-list" id="ordersList"></div>
+
+      <div class="empty-state" id="emptyOrders" hidden>
+        <p id="emptyOrdersText">You haven't placed any orders yet.</p>
+        <a href="categories.html" class="continue-link" id="emptyOrdersLink">Start shopping →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <a href="index.html" class="brand footer-brand">Style<span>Hub</span></a>
+      <p>Fashion for everyone.</p>
+    </div>
+
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="categories.html">Categories</a>
+    </div>
+
+    <p class="copyright">© 2026 StyleHub. All rights reserved.</p>
+  </footer>
+</body>
+</html>
