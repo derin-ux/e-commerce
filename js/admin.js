@@ -1,5 +1,12 @@
 const token = localStorage.getItem("token");
 const $ = (id) => document.getElementById(id);
+const logoutBtn = document.getElementById("logoutBtn");
+
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "login.html";
+});
 
 function goToLogin() {
   localStorage.removeItem("token");
