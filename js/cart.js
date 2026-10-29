@@ -1,188 +1,421 @@
-// js/cart.js
-const API_URL = "http://localhost:5000/api"; // same base URL as your other files
+(() => {
+  "use strict";
 
-// Guesses: change these to match your real cart routes
-const CART_PATH = "/cart";
-const itemPath = (productId) => `/cart/items/${productId}`;
+  const BASE =
+    typeof API_URL !== "undefined"
+      ? API_URL
+      : "http://localhost:5000/api";
 
-const token = localStorage.getItem("token");
-const $ = (id) => document.getElementById(id);
+  const CART_PATH = "/cart";
 
-let items = []; // [{ product: {...}, quantity }]
+  const $ = (id) => document.getElementById(id);
 
-function escapeHTML(text) {
-  const div = document.createElement("div");
-  div.textContent = text ?? "";
-  return div.innerHTML;
-}
+  let items = [];
+  let busy = false;
 
-async function authFetch(path, options = {}) {
-  const res = await fetch(`${API_URL}${path}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  if (res.status === 401) {
-    localStorage.removeItem("token");
-    window.location.href = "login.html";
+  // ---------- Helpers ----------
+
+  function escapeHTML(value) {
+    const div = document.createElement("div");
+    div.textContent = value ?? "";
+    return div.innerHTML;
   }
-  const data = await res.json().catch(() => ({}));
-  return { res, data };
-}
 
-function showMessage(text, isError = true) {
-  $("cartMessage").textContent = text;
-  $("cartMessage").style.color = isError ? "#b3261e" : "var(--green)";
-}
+  function formatPrice(value) {
+    const price = Number(value);
+    return `₦${(Number.isFinite(price) ? price : 0).toLocaleString("en-NG")}`;
+  }
 
-function showEmpty(text) {
-  $("cartLayout").hidden = true;
-  $("emptyCart").hidden = false;
-  $("emptyCartText").textContent = text;
-}
+  function getProductImage(product) {
+    if (
+      Array.isArray(product.images) &&
+      product.images.length &&
+      product.images[0]
+    ) {
+      return product.images[0];
+    }
 
-// ---------- header: Login/Logout + cart count ----------
-function setupHeader() {
-  const link = $("authLink");
-  if (token) {
-    link.textContent = "Logout";
-    link.href = "#";
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      localStorage.removeItem("token");
-      localStorage.removeItem("cartCount");
-      window.location.href = "index.html";
+    return "images/placeholder.png";
+  }
+
+  function getTotalQuantity(cartItems = items) {
+    return cartItems.reduce(
+      (total, item) => total + Number(item.quantity || 0),
+      0
+    );
+  }
+
+  function getCartTotal(cartItems = items) {
+    return cartItems.reduce((total, item) => {
+      return (
+        total +
+        Number(item.product?.price || 0) *
+          Number(item.quantity || 0)
+      );
+    }, 0);
+  }
+
+  function setCartCount(count) {
+    localStorage.setItem("cartCount", String(count));
+
+    const element = $("cartCount");
+
+    if (element) {
+      element.textContent = count;
+    }
+  }
+
+  // ---------- API ----------
+
+  async function authFetch(path, options = {}) {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      window.location.href = "login.html";
+      return {
+        res: { ok: false, status: 401 },
+        data: {}
+      };
+    }
+
+    const headers = {
+      ...(options.headers || {}),
+      Authorization: `Bearer ${token}`
+    };
+
+    if (options.body) {
+      headers["Content-Type"] = "application/json";
+    }
+
+    const res = await fetch(`${BASE}${path}`, {
+      ...options,
+      headers
     });
-  }
-}
 
-function setCartCount(n) {
-  $("cartCount").textContent = n;
-  localStorage.setItem("cartCount", String(n)); // the home page reads this
-}
+    const data = await res.json().catch(() => ({}));
 
-// ---------- rendering ----------
-function render() {
-  if (!items.length) {
-    setCartCount(0);
-    return showEmpty("Your cart is empty.");
+    if (res.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "login.html";
+    }
+
+    return { res, data };
   }
 
-  $("emptyCart").hidden = true;
-  $("cartLayout").hidden = false;
+  // ---------- Messages ----------
 
-  let total = 0;
-  let totalQty = 0;
-  let hasProblem = false;
+  function showMessage(message, isError = true) {
+    const element = $("cartMessage");
 
-  $("cartItems").innerHTML = items
-    .map(({ product: p, quantity }) => {
-      const stock = Number(p.quantity);
-      const tooMany = quantity > stock;
-      if (tooMany) hasProblem = true;
+    if (!element) return;
 
-      total += Number(p.price) * quantity;
-      totalQty += quantity;
+    element.textContent = message;
+    element.style.color = isError ? "#b3261e" : "var(--green)";
+  }
 
-      const image = p.images && p.images.length ? p.images[0] : "images/placeholder.png";
-      const warning =
-        stock === 0
-          ? "Out of stock. Remove it to continue."
-          : tooMany
-          ? `Only ${stock} left. Reduce the quantity to continue.`
-          : "";
-
-      return `
-      <article class="cart-item">
-        <a class="cart-item-image" href="product.html?id=${p._id}">
-          <img src="${escapeHTML(image)}" alt="${escapeHTML(p.name)}">
-        </a>
-
-        <div class="cart-item-info">
-          <p class="cart-item-shop">${escapeHTML(p.shop?.name || "")}</p>
-          <h3>${escapeHTML(p.name)}</h3>
-          <p class="cart-item-price">₦${Number(p.price).toLocaleString()}</p>
-          ${warning ? `<p class="cart-item-warning">${warning}</p>` : ""}
-        </div>
-
-        <div class="cart-item-side">
-          <div class="qty-control">
-            <button type="button" data-action="dec" data-id="${p._id}"
-                    aria-label="Decrease quantity" ${quantity <= 1 ? "disabled" : ""}>−</button>
-            <span>${quantity}</span>
-            <button type="button" data-action="inc" data-id="${p._id}"
-                    aria-label="Increase quantity" ${quantity >= stock ? "disabled" : ""}>+</button>
-          </div>
-          <button type="button" class="remove-button" data-action="remove"
-                  data-id="${p._id}">Remove</button>
-        </div>
-      </article>`;
-    })
-    .join("");
-
-  $("summaryCount").textContent = totalQty;
-  $("summaryTotal").textContent = `₦${total.toLocaleString()}`;
-  $("checkoutButton").classList.toggle("disabled", hasProblem);
-  setCartCount(totalQty);
-}
-
-// ---------- load ----------
-async function loadCart() {
-  if (!token) {
+  function showEmpty(message) {
     $("cartLayout").hidden = true;
     $("emptyCart").hidden = false;
-    $("emptyCartText").innerHTML =
-      'Please <a href="login.html" class="continue-link">log in</a> to see your cart.';
-    return;
+    $("emptyCartText").textContent = message;
   }
 
-  const { res, data } = await authFetch(CART_PATH);
+  // ---------- Header ----------
 
-  if (res.status === 403) {
-    return showEmpty("Only customer accounts have a cart. Log in as a customer to shop.");
-  }
-  if (!res.ok) {
-    return showMessage(data.message || "Could not load your cart.");
-  }
+  function setupHeader() {
+    const authLink = $("authLink");
 
-  const cart = data.cart || data;
-  // Keep only items whose product still exists (a deleted product comes back empty)
-  items = (cart.items || []).filter(
-    (i) => i.product && typeof i.product === "object"
-  );
-  render();
-}
+    if (!authLink) return;
 
-// ---------- buttons: + / − / remove ----------
-$("cartItems").addEventListener("click", async (e) => {
-  const btn = e.target.closest("button[data-action]");
-  if (!btn) return;
+    if (localStorage.getItem("token")) {
+      authLink.textContent = "Logout";
+      authLink.href = "#";
 
-  const id = btn.dataset.id;
-  const current = items.find((i) => i.product._id === id);
-  if (!current) return;
+      authLink.addEventListener("click", (event) => {
+        event.preventDefault();
 
-  showMessage("");
-  btn.disabled = true;
-  let result;
+        localStorage.removeItem("token");
+        localStorage.removeItem("cartCount");
 
-  if (btn.dataset.action === "remove") {
-    result = await authFetch(itemPath(id), { method: "DELETE" });
-  } else {
-    const quantity = current.quantity + (btn.dataset.action === "inc" ? 1 : -1);
-    result = await authFetch(itemPath(id), {
-      method: "PATCH",
-      body: JSON.stringify({ quantity }),
-    });
+        window.location.href = "index.html";
+      });
+    } else {
+      authLink.textContent = "Login";
+      authLink.href = "login.html";
+    }
   }
 
-  if (!result.res.ok) {
-    showMessage(result.data.message || "Could not update your cart.");
-  }
-  loadCart(); // always reload so the page matches the server
-});
+  // ---------- Render cart ----------
 
-setupHeader();
-loadCart();
+  function render() {
+    const validItems = items.filter(
+      (item) =>
+        item.product &&
+        typeof item.product === "object" &&
+        item.product._id
+    );
+
+    items = validItems;
+
+    const count = getTotalQuantity();
+    setCartCount(count);
+
+    if (items.length === 0) {
+      $("cartItems").innerHTML = "";
+      $("summaryCount").textContent = "0";
+      $("summaryTotal").textContent = formatPrice(0);
+
+      $("checkoutButton").classList.add("disabled");
+      $("checkoutButton").setAttribute("aria-disabled", "true");
+
+      showEmpty("Your cart is empty.");
+      return;
+    }
+
+    $("emptyCart").hidden = true;
+    $("cartLayout").hidden = false;
+
+    let hasProblem = false;
+
+    $("cartItems").innerHTML = items
+      .map(({ product, quantity }) => {
+        const stock = Number(product.quantity) || 0;
+        const price = Number(product.price) || 0;
+        const qty = Number(quantity) || 1;
+
+        const tooMany = qty > stock;
+        const outOfStock = stock <= 0;
+
+        if (tooMany || outOfStock) {
+          hasProblem = true;
+        }
+
+        let warning = "";
+
+        if (outOfStock) {
+          warning = "Out of stock. Remove this item to continue.";
+        } else if (tooMany) {
+          warning = `Only ${stock} left. Reduce the quantity to continue.`;
+        }
+
+        const image = getProductImage(product);
+
+        return `
+          <article class="cart-item">
+
+            <a
+              class="cart-item-image"
+              href="product.html?id=${encodeURIComponent(product._id)}"
+            >
+              <img
+                src="${escapeHTML(image)}"
+                alt="${escapeHTML(product.name)}"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='images/placeholder.png';"
+              >
+            </a>
+
+            <div class="cart-item-info">
+              <p class="cart-item-shop">
+                ${escapeHTML(product.shop?.name || "")}
+              </p>
+
+              <h3>${escapeHTML(product.name)}</h3>
+
+              <p class="cart-item-price">
+                ${formatPrice(price)}
+              </p>
+
+              ${
+                warning
+                  ? `<p class="cart-item-warning">${escapeHTML(warning)}</p>`
+                  : ""
+              }
+            </div>
+
+            <div class="cart-item-side">
+
+              <div class="qty-control">
+
+                <button
+                  type="button"
+                  data-action="dec"
+                  data-id="${escapeHTML(product._id)}"
+                  aria-label="Decrease quantity"
+                  ${qty <= 1 || busy ? "disabled" : ""}
+                >−</button>
+
+                <span>${qty}</span>
+
+                <button
+                  type="button"
+                  data-action="inc"
+                  data-id="${escapeHTML(product._id)}"
+                  aria-label="Increase quantity"
+                  ${qty >= stock || busy ? "disabled" : ""}
+                >+</button>
+
+              </div>
+
+              <button
+                type="button"
+                class="remove-button"
+                data-action="remove"
+                data-id="${escapeHTML(product._id)}"
+                ${busy ? "disabled" : ""}
+              >
+                Remove
+              </button>
+
+            </div>
+          </article>
+        `;
+      })
+      .join("");
+
+    $("summaryCount").textContent = count;
+    $("summaryTotal").textContent = formatPrice(getCartTotal());
+
+    const checkoutButton = $("checkoutButton");
+
+    checkoutButton.classList.toggle("disabled", hasProblem);
+
+    if (hasProblem) {
+      checkoutButton.setAttribute("aria-disabled", "true");
+      showMessage(
+        "Some items are out of stock or exceed available stock. Update your cart before checkout."
+      );
+    } else {
+      checkoutButton.removeAttribute("aria-disabled");
+      showMessage("");
+    }
+  }
+
+  // ---------- Load cart ----------
+
+  async function loadCart() {
+    if (!localStorage.getItem("token")) {
+      setCartCount(0);
+      showEmpty("Please log in to see your cart.");
+      return;
+    }
+
+    showMessage("Loading your cart...", false);
+
+    try {
+      const { res, data } = await authFetch(CART_PATH);
+
+      if (res.status === 401) return;
+
+      if (res.status === 403) {
+        showEmpty(
+          "Only customer accounts have a cart. Please log in as a customer."
+        );
+        return;
+      }
+
+      if (!res.ok) {
+        showMessage(
+          data.message || "Could not load your cart. Please try again."
+        );
+        return;
+      }
+
+      // Backend returns { items, total }, not necessarily { cart: { items } }.
+      const cart = data.cart || data;
+
+      items = Array.isArray(cart.items) ? cart.items : [];
+
+      render();
+    } catch (error) {
+      console.error("Cart loading error:", error);
+
+      showMessage(
+        "Could not connect to the server. Check that your backend is running."
+      );
+    }
+  }
+
+  // ---------- Quantity, remove and clear ----------
+
+  $("cartItems").addEventListener("click", async (event) => {
+    const button = event.target.closest("button[data-action]");
+
+    if (!button || busy) return;
+
+    const productId = button.dataset.id;
+    const action = button.dataset.action;
+
+    const current = items.find(
+      (item) => String(item.product._id) === String(productId)
+    );
+
+    if (!current) return;
+
+    let method;
+    let path;
+    let body;
+
+    if (action === "remove") {
+      method = "DELETE";
+      path = `${CART_PATH}/${encodeURIComponent(productId)}`;
+    } else if (action === "inc" || action === "dec") {
+      const currentQuantity = Number(current.quantity);
+      const newQuantity =
+        currentQuantity + (action === "inc" ? 1 : -1);
+
+      if (newQuantity < 1) return;
+
+      const stock = Number(current.product.quantity) || 0;
+
+      if (newQuantity > stock) {
+        showMessage(`Only ${stock} in stock.`);
+        return;
+      }
+
+      method = "PUT";
+      path = `${CART_PATH}/${encodeURIComponent(productId)}`;
+      body = JSON.stringify({ quantity: newQuantity });
+    } else {
+      return;
+    }
+
+    busy = true;
+    button.disabled = true;
+    showMessage("");
+
+    try {
+      const { res, data } = await authFetch(path, {
+        method,
+        ...(body ? { body } : {})
+      });
+
+      if (res.status === 401) return;
+
+      if (!res.ok) {
+        throw new Error(
+          data.message || "Could not update your cart."
+        );
+      }
+
+      const cart = data.cart || data;
+
+      if (Array.isArray(cart.items)) {
+        items = cart.items;
+        render();
+      } else {
+        await loadCart();
+      }
+    } catch (error) {
+      console.error("Cart update error:", error);
+      showMessage(error.message || "Could not update your cart.");
+    } finally {
+      busy = false;
+      render();
+    }
+  });
+
+  // ---------- Initialization ----------
+
+  setupHeader();
+  loadCart();
+})();
